@@ -10,7 +10,7 @@ const Header = () => {
         <span>  |  </span>
         <Link to='/login' >Login</Link>
 
-        <p>Hello {name}</p>
+        {/* <p>Hello {name}</p> */}
     </div>
   )
 }
