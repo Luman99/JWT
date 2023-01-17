@@ -9,6 +9,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .serializers import NoteSerializer
 from base.models import Note
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -16,7 +19,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         # Add custom claims
-        token['username'] = user.username
+        token['email'] = user.email
         # ...
 
         return token
