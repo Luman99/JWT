@@ -1,17 +1,25 @@
 import React, {useContext} from 'react'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap';
 import AuthContext from '../context/AuthContext'
 
 const Header = () => {
-    let {name} = useContext(AuthContext)
+    let {user, logoutUser} = useContext(AuthContext)
   return (
-    <div>
-        <Link to='/' >Home</Link>
-        <span>  |  </span>
-        <Link to='/login' >Login</Link>
+<div>
+    <Button onClick={() => {window.location.href='/'}}>Home</Button>
+    <span>  |  </span>
+    <Button onClick={() => {window.location.href='/registration'}}>Registration</Button>
+    <span>  |  </span>
+    {user ? (
+        <Button onClick={logoutUser}>Logout</Button>
+    ): (
+        <Button onClick={() => {window.location.href='/login'}}>Login</Button>
+    )}
 
-        {/* <p>Hello {name}</p> */}
-    </div>
+    {user &&   <p>Hello {user.username}</p>}
+</div>
+
   )
 }
 

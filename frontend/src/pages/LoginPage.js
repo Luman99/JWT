@@ -6,7 +6,7 @@ const LoginPage = () => {
   return (
     <div>
         <form onSubmit={loginUser}>
-            <input type='text' name='username' placeholder='Enter Username' />
+            <input type='text' name='email' placeholder='Enter Email' />
             <input type='password' name='password' placeholder='Enter Password' />
             <input type='submit' />
         </form>

@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'base.apps.BaseConfig',
+    'base',
+    'userowo',
 
     'rest_framework',
+    'rest_framework_simplejwt', #chyba niepotrzebne
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ]
@@ -119,10 +121,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'rowerowo_db',
+        'USER': 'luman',
+        'PASSWORD': '09polkmn',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
+AUTH_USER_MODEL = 'userowo.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -164,3 +172,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True #to można potem zmienić na deployu
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'tekyon.civ.pl'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'lukasz.grabowski@zdalna-lekcja.pl'
+EMAIL_HOST_PASSWORD = '19@Lukasz#99'
