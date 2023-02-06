@@ -15,6 +15,23 @@ export const AuthProvider = ({children}) => {
 
     const history = useNavigate()
 
+    let registrationUser = async (e )=> {
+        e.preventDefault()
+        let response = await fetch('http://127.0.0.1:8000/api/users/', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({'email':e.target.email.value, 'username':e.target.username.value, 'password':e.target.password.value})
+        })
+        let data = await response.json()
+
+        if(response.status === 201){
+            history('/login')
+        }else{
+            alert('Something went wrong!')
+        }
+    }
 
     let loginUser = async (e )=> {
         if(!loading){
@@ -39,6 +56,7 @@ export const AuthProvider = ({children}) => {
             alert('Something went wrong!')
         }
     }
+    
 
     let logoutUser = () => {
         setAuthTokens(null)
@@ -73,6 +91,7 @@ export const AuthProvider = ({children}) => {
     let contextData = {
         user:user,
         authTokens:authTokens,
+        registrationUser:registrationUser,
         loginUser:loginUser,
         logoutUser:logoutUser,
     }

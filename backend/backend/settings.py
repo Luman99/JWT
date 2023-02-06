@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'userowo',
 
     'rest_framework',
-    'rest_framework_simplejwt',
+    'rest_framework_simplejwt', #chyba niepotrzebne
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
 ]
@@ -172,3 +172,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True #to można potem zmienić na deployu
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'tekyon.civ.pl'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'lukasz.grabowski@zdalna-lekcja.pl'
+EMAIL_HOST_PASSWORD = '19@Lukasz#99'

@@ -8,8 +8,3 @@ class NoteSerializer(ModelSerializer):
     class Meta:
         model = Note
         fields = '__all__'
-
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
