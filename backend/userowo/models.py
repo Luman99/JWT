@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
 # Create your models here.
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, teacher=None, students_group=None, is_active=False, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -21,7 +21,10 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username
+            username=username,
+            students_group=students_group,
+            teacher=teacher,
+            is_active=is_active
         )
 
         user.set_password(password)
@@ -65,6 +68,7 @@ class User(AbstractBaseUser):
     )
     username = models.CharField(max_length=50, unique=True)
     teacher = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    students_group = models.ForeignKey('StudentsGroup', on_delete=models.CASCADE, null=True, blank=True)
     is_teacher = models.BooleanField(default=True)
     is_active = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)  # a admin user; non super-user
@@ -123,3 +127,8 @@ class VerificationToken(models.Model):
 
     def generate_token(self):
         return ''.join(random.choices(string.ascii_letters + string.digits, k=40))
+
+
+class StudentsGroup(models.Model):
+    name = models.CharField(max_length=40, unique=False)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
