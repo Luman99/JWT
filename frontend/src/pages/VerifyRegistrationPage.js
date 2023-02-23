@@ -30,7 +30,7 @@ const VerifyRegistrationPage = () => {
     //   return;
     // }
   
-    let response = await fetch(`http://127.0.0.1:8000/api/users/rowerowo.host@gmail.com/`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/users/${email}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"

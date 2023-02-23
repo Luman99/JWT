@@ -7,6 +7,7 @@ import PrivateRoute from './utils/PrivateRoute'
 import { AuthProvider } from './context/AuthContext'
 
 import HomePage from './pages/HomePage'
+import GroupsPage from './pages/GroupsPage/GroupsPage'
 import LoginPage from './pages/LoginPage'
 import RegistrationPage from './pages/RegistrationPage'
 import VerifyRegistrationPage from './pages/VerifyRegistrationPage'
@@ -29,6 +30,7 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="registration" element={<RegistrationPage />} />
           <Route path="verify_registration/:token" element={<VerifyRegistrationPage />} />
+          <Route path="grupy" element={<GroupsPage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

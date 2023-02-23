@@ -16,6 +16,9 @@ const Header = () => {
     ): (
         <Button onClick={() => {window.location.href='/login'}}>Login</Button>
     )}
+    <span>  |  </span>
+    <Button onClick={() => {window.location.href='/grupy'}}>Grupy</Button>
+    <span>  |  </span>
 
     {user &&   <p>Hello {user.username}</p>}
 </div>
