@@ -6,11 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.mail import send_mail
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 
 from ..models import VerificationToken, StudentsGroup
-from .serializers import UserSerializer, UpdateUserSerializer, StudentsGroupSerializer
+from .serializers import UserSerializer, UpdateUserSerializer, StudentsGroupSerializer, CreateStudentsGroupSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -53,9 +53,10 @@ def verify_token(request, token):
     except VerificationToken.DoesNotExist:
         return JsonResponse({'error': 'Invalid token'}, status=400)
 
-@api_view(['PATCH'])
+@api_view(['PATCH', 'DELETE'])
 def update_user(request, email):
     user = User.objects.get(email=email)
+
     serializer = UpdateUserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
@@ -70,6 +71,23 @@ def update_user(request, email):
         return JsonResponse(serializer.data, status=status.HTTP_200_OK)
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def edit_user(request, email):
+    user = User.objects.get(email=email)
+
+    if request.method == 'PATCH':
+        serializer = UpdateUserSerializer(instance=user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        user.delete()
+        return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -86,16 +104,33 @@ def get_students_group(request):
     return JsonResponse(serialized_data, safe=False)
 
 
-@api_view(['PATCH'])
+@api_view(['PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def update_students_group(request, pk):
     user = request.user
     studentsgroup = get_object_or_404(StudentsGroup, pk=pk, teacher=user)
-    serializer = StudentsGroupSerializer(studentsgroup, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse(serializer.data)
-    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    if request.method == 'PATCH':
+        serializer = StudentsGroupSerializer(studentsgroup, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        studentsgroup.delete()
+        return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_students_group(request):
+    user = request.user
+    serializer = CreateStudentsGroupSerializer(data=request.data)
+    if serializer.is_valid():
+        studentsgroup = serializer.save(teacher=user)
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

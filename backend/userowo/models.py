@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
 # Create your models here.
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, teacher=None, students_group=None, is_active=False, password=None):
+    def create_user(self, username, email, is_teacher, surname='', teacher=None, students_group=None, is_active=False, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -22,8 +22,10 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
             username=username,
+            surname=surname,
             students_group=students_group,
             teacher=teacher,
+            is_teacher=is_teacher,
             is_active=is_active
         )
 
@@ -66,7 +68,8 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=50, unique=False)
+    surname = models.CharField(max_length=50, unique=False, null=True, blank=True, default='')
     teacher = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     students_group = models.ForeignKey('StudentsGroup', on_delete=models.CASCADE, null=True, blank=True)
     is_teacher = models.BooleanField(default=True)

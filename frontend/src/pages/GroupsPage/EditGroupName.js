@@ -15,7 +15,7 @@ export const Modal = ({ open, onClose, children }) => {
 };
 
 
-export const EditModal = ({ group, onClose, onEdit }) => {
+export const EditModal = ({ group, onClose, onEdit, onDelete, onDelete2 }) => {
   const [groupName, setGroupName] = useState(group.name || '');
   // useEffect(() => {
   //   setGroupName(group.name);
@@ -40,10 +40,29 @@ export const EditModal = ({ group, onClose, onEdit }) => {
     }
   };
 
+  const handleDelete = async () => {
+    const response = await fetch(`http://127.0.0.1:8000/api/students_group/${group.id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + String(authTokens.access),
+      },
+    });
+    if (response.status === 204) {
+      onDelete();
+      onClose();
+    } else if (response.statusText === 'Unauthorized') {
+      logoutUser();
+    } else {
+      alert('Something went wrong!');
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <input type="text" value={groupName} onChange={(e) => setGroupName(e.target.value)} />
       <button type="submit">Zapisz</button>
+      <button type="button" onClick={handleDelete}>Usuń grupę</button>
     </form>
   );
 };

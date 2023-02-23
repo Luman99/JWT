@@ -8,7 +8,7 @@ User = get_user_model()
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password', 'students_group', 'teacher', 'is_active')
+        fields = ('id', 'username', 'surname', 'email', 'password', 'students_group', 'teacher', 'is_active', 'is_teacher')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -26,9 +26,10 @@ class UserSerializer(ModelSerializer):
 class UpdateUserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ['is_active']
+        fields = ['is_active', 'username', 'surname', 'email']
         extra_kwargs = {
             'username': {'required': False},
+            'surname': {'required': False},
             'email': {'required': False},
             'password': {'required': False},
         }
@@ -39,3 +40,8 @@ class StudentsGroupSerializer(ModelSerializer):
     class Meta:
         model = StudentsGroup
         fields = ('id', 'name', 'teacher', 'user_set')
+
+class CreateStudentsGroupSerializer(ModelSerializer):
+    class Meta:
+        model = StudentsGroup
+        fields = ('name', 'teacher')

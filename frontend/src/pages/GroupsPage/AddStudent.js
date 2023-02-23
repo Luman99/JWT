@@ -18,6 +18,7 @@ import AuthContext from '../../context/AuthContext'
 export const CreateUserModal = ({ group, onClose, onCreate, onEdit }) => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
+  const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
   let {user} = useContext(AuthContext)
   
@@ -29,7 +30,7 @@ export const CreateUserModal = ({ group, onClose, onCreate, onEdit }) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, username, password, students_group: group.id, teacher: user.id, is_active: true }), //is_teacher na false
+    body: JSON.stringify({ email, username, surname, password, students_group: group.id, teacher: user.id, is_teacher: false, is_active: true }), //is_teacher na false
 });
   const data = await response.json();
   // console.log(response);
@@ -47,6 +48,7 @@ export const CreateUserModal = ({ group, onClose, onCreate, onEdit }) => {
   <form onSubmit={handleSubmit}>
     <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
     <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+    <input type="text" placeholder="Surname" value={surname} onChange={(e) => setSurname(e.target.value)} />
     <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
     <button type="submit">Create User</button>
   </form>
