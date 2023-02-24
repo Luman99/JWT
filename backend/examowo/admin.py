@@ -4,6 +4,22 @@ from examowo.models import Exam, Category, Question, Answer
 # Register your models here.
 
 admin.site.register(Exam)
-admin.site.register(Category)
-admin.site.register(Question)
-admin.site.register(Answer)
+
+class AnswerInline(admin.TabularInline):
+    model = Answer
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    inlines = [QuestionInline]
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = [AnswerInline]
+
+@admin.register(Answer)
+class AnswerAdmin(admin.ModelAdmin):
+    pass
+

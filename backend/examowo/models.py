@@ -20,6 +20,7 @@ class Category(models.Model):
     zasady_pierwszenstwa = 3
     obsluga_roweru = 4
     pierwsza_pomoc = 5
+
     CATEGORY_CHOICES = (
         (przepisy_ogolne, 'przepisy_ogolne'),
         (znaki_drogowe, 'znaki_drogowe'),
@@ -33,6 +34,12 @@ class Category(models.Model):
 
     category_id = models.IntegerField(default=1, choices=CATEGORY_CHOICES)
 
+    def __str__(self):
+        return self.get_category_name()
+
+    def get_category_name(self):
+        return dict(self.CATEGORY_CHOICES).get(self.category_id)
+    
     @classmethod
     def get_default_pk(cls):
         category, created = cls.objects.get_or_create(category_id=1)
