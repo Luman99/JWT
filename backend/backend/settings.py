@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'base',
     'userowo',
+    'examowo',
 
     'rest_framework',
     'rest_framework_simplejwt', #chyba niepotrzebne
