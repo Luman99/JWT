@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from examowo.models import Question, Answer
+from examowo.models import Question, Answer, Exam
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -14,3 +14,9 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ['id', 'text', 'answer_set']
+
+
+class ExamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exam
+        fields = '__all__'

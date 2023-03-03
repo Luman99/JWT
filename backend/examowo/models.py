@@ -1,16 +1,44 @@
 from django.db import models
+from userowo.models import User
 
 
 class Exam(models.Model):
     def __str__(self):
-        return self.exam_name
+        return self.name
 
-    exam_name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, null=True, blank=True, default='')
+    description = models.CharField(max_length=300, null=True, blank=True, default='')
+    start = models.DateTimeField(auto_now=False, default=None)
+    end = models.DateTimeField(auto_now=False, default=None)
+    time_to_solve = models.IntegerField(default=30)
+    show_results = models.BooleanField(default=True)
+    block_site = models.BooleanField(default=True)
+    mix_questions = models.BooleanField(default=True)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='exams_as_teacher')
+    users = models.ManyToManyField(User, through="UserExam")
+    questions = models.ManyToManyField('Question', through='ExamQuestion', through_fields=('exam', 'question'))
 
     @classmethod
     def get_default_pk(cls):
-        exam, created = cls.objects.get_or_create(exam_name='pierwszy')
+        exam, created = cls.objects.get_or_create(name='pierwszy')
         return exam.pk
+    
+    def get_questions(self):
+        return self.questions.all()
+
+
+class UserExam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    score = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        unique_together = ('user', 'exam',)
+
+class ExamQuestion(models.Model):
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    question = models.ForeignKey('Question', on_delete=models.CASCADE)
+
 
 
 #zmienne typu przepisy ogolne po angielsku
@@ -51,9 +79,10 @@ class Question(models.Model):
         return self.text
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True, blank=True) #manytomany i daj żeby exam to miał
     text = models.CharField(max_length=200)
 
+    def get_exams(self):
+        return self.exam_set.all()
 
 class Answer(models.Model):
     def __str__(self):
