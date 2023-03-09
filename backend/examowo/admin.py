@@ -1,5 +1,5 @@
 from django.contrib import admin
-from examowo.models import Exam, Category, Question, Answer, ExamQuestion
+from examowo.models import Exam, Category, Question, Answer, ExamQuestion, UserExam
 
 # Register your models here.
 
@@ -16,6 +16,10 @@ class AnswerInline(admin.TabularInline):
 class QuestionInline(admin.TabularInline):
     model = Question
 
+
+class UserExamInline(admin.TabularInline):
+    model = UserExam
+
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'start', 'end', 'time_to_solve', 'show_results', 'block_site', 'mix_questions')
@@ -23,7 +27,9 @@ class ExamAdmin(admin.ModelAdmin):
     inlines = [
         ExamQuestionInline,
         QuestionExamInline,
+        UserExamInline,
     ]
+
 
 class CategoryAdmin(admin.ModelAdmin):
     inlines = [QuestionInline]
