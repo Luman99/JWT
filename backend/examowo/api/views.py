@@ -72,7 +72,7 @@ def add_users_to_exam(request, exam_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def teacher_exams(request):
-    exams = Exam.objects.filter(teacher=request.teacher)
-    print(exams)
+    exams = Exam.objects.filter(teacher=request.query_params.get('teacher'))
     exams_data = [{'id': exam.id, 'name': exam.name} for exam in exams]
     return JsonResponse(exams_data, safe=False)
+
