@@ -14,6 +14,7 @@ class Exam(models.Model):
     show_results = models.BooleanField(default=True)
     block_site = models.BooleanField(default=True)
     mix_questions = models.BooleanField(default=True)
+    access_code = models.CharField(max_length=20, null=True, blank=True)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='exams_as_teacher')
     users = models.ManyToManyField(User, through="UserExam")
     questions = models.ManyToManyField('Question', through='ExamQuestion', through_fields=('exam', 'question'))

@@ -17,6 +17,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class ExamSerializer(serializers.ModelSerializer):
+    access_code = serializers.CharField(required=False)
     class Meta:
         model = Exam
-        fields = '__all__'
+        fields = ['id', 'name', 'description', 'start', 'end', 'time_to_solve', 'show_results', 'block_site', 'mix_questions', 'teacher', 'users', 'questions', 'access_code']

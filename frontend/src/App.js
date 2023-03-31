@@ -14,6 +14,9 @@ import RegistrationPage from './pages/RegistrationPage'
 import VerifyRegistrationPage from './pages/VerifyRegistrationPage'
 import CategoryQuestions from './pages/QuestionsPage'
 import CreateExamPage from './pages/CreateExamPage'
+import TeacherExamsPage from './pages/TeacherExamsPage'
+import EditExamPage from './pages/EditExamPage'
+import ExamUsersPage from './pages/ExamUsersPage'
 import Header from './components/Header'
 
 function App() {
@@ -37,6 +40,10 @@ function App() {
           <Route path="grupy" element={<GroupsPage />} />
           <Route path="questions/:category_id" element={<CategoryQuestions />} />
           <Route path="createexam" element={<CreateExamPage />} />
+          <Route path="teacherexams" element={<TeacherExamsPage />} />
+          <Route path="edit-exam/:id" element={<EditExamPage />} />
+          <Route path="exam_users" element={<ExamUsersPage />} />
+          
         </Routes>
       </AuthProvider>
     </BrowserRouter>

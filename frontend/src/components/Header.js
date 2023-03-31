@@ -19,6 +19,7 @@ const Header = () => {
 
       {user && <Button onClick={() => {window.location.href='/grupy'}} className="btn-block">Grupy</Button>}
       <Button onClick={() => {window.location.href='/createexam'}} className="btn-block">Utwórz egzamin</Button>
+      <Button onClick={() => {window.location.href='/teacherexams'}} className="btn-block">Egzaminy</Button>
       <div className="dropdown">
       {user && <Button className="training-btn dropdown-toggle" onClick={handleTrainingClick} type="button">
           Trening

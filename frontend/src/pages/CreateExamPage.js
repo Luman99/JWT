@@ -76,6 +76,7 @@ const CreateExamPage = () => {
     // };
     fetchQuestions();
     getStudentsGroups();
+
     //fetchUsers();
   }, []);
 
@@ -104,6 +105,7 @@ const CreateExamPage = () => {
       }
     );
       const examId = response.data.id;
+      console.log(response)
       console.log(selectedQuestion)
       console.log(selectedQuestions)
       await axios.patch(`http://localhost:8000/api/exams/${examId}/add_questions/`, 
@@ -119,9 +121,9 @@ const CreateExamPage = () => {
     );
     
     
-      await axios.patch(`http://localhost:8000/api/exams/${examId}/add_users/`, 
+      await axios.patch(`http://localhost:8000/api/exams/${examId}/users/`, 
       {
-        users: selectedUsers.map((u) => u.users.id),
+        users: selectedUsers.map((u) => u.id),
       },
       {
         headers: {
@@ -157,6 +159,19 @@ const CreateExamPage = () => {
       ...prevSelectedUsers,
       selectedUser,
     ]);
+    setStudentsGroups((prevGroups) =>
+    prevGroups.map((group) => {
+      if (group.students) {
+        return {
+          ...group,
+          students: group.students.filter(
+            (student) => student.id !== selectedUser.id
+          ),
+        };
+      }
+      return group;
+    })
+  );
   };
 
   return (
@@ -234,7 +249,7 @@ const CreateExamPage = () => {
       const user = studentsGroups.find((group) =>
         group.students.find((student) => student.id === userId)
         ).students.find((student) => student.id === userId);
-      console.log(user) //tu jest grupa a nie user, trzeba to naprawić
+      console.log(user)
       setSelectedUser(user);
     }}
   >
