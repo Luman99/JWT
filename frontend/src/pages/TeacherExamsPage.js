@@ -47,7 +47,7 @@ const TeacherExams = () => {
                 <React.Fragment>
                 <Link to={`/edit-exam/${exam.id}`}>{exam.name}</Link>
                 <span>    </span>
-                {/* <Link to="/exam_users/">Edytuj uczniów</Link> */}
+                <Link to={`/exam_users/${exam.id}`}>Edytuj uczniów</Link>
                 </React.Fragment>
               </li>
             ))}

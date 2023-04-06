@@ -42,7 +42,7 @@ function App() {
           <Route path="createexam" element={<CreateExamPage />} />
           <Route path="teacherexams" element={<TeacherExamsPage />} />
           <Route path="edit-exam/:id" element={<EditExamPage />} />
-          <Route path="exam_users" element={<ExamUsersPage />} />
+          <Route path="exam_users/:id" element={<ExamUsersPage />} />
           
         </Routes>
       </AuthProvider>
