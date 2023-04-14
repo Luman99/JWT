@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!7qvt$ev-@p9v$a@#ipfwtmcq#6w@fk+ba(iua-abpbs3j+)$q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # potem to zmień !!!!!!!!!!!!!!!!!
 
 # Application definition
 
@@ -121,11 +121,21 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
-if os.environ.get('RUNNING_ON_EC2'):
-    from .settings_ec2 import *
-else:
-    from .settings_local import *
+# os.environ.setdefault('RUNNING_ON_EC2', 'False')
+# if os.environ.get('RUNNING_ON_EC2'):
+#     from .settings_ec2 import *
+# else:
+#     from .settings_local import *
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'rowerowo',
+        'USER': 'luman',
+        'PASSWORD': 'szprychy',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
     
 
 AUTH_USER_MODEL = 'userowo.User'
