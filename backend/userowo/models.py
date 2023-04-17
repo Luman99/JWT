@@ -41,6 +41,7 @@ class UserManager(BaseUserManager):
             username=username,
             email=email,
             password=password,
+            is_teacher=True,
         )
         user.staff = True
         user.save(using=self._db)
@@ -54,6 +55,7 @@ class UserManager(BaseUserManager):
             username=username,
             email=email,
             password=password,
+            is_teacher=True,
         )
         user.staff = True
         user.admin = True
