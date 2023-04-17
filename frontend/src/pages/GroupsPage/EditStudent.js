@@ -29,7 +29,7 @@ export const EditStudent = ({ student, onClose, onEdit, onDelete }) => {
   const handleSubmit = async (event) => {
     console.log(student.email);
     event.preventDefault();
-    const response = await fetch(`http://127.0.0.1:8000/api/edit_user/${student.email}/`, {
+    const response = await fetch(`http://localhost:8000/api/edit_user/${student.email}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const EditStudent = ({ student, onClose, onEdit, onDelete }) => {
 
 
   const handleDelete = async () => {
-      const response = await fetch(`http://127.0.0.1:8000/api/edit_user/${student.email}/`, {
+      const response = await fetch(`http://localhost:8000/api/edit_user/${student.email}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

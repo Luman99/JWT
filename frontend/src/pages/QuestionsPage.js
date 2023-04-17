@@ -49,7 +49,7 @@ const CategoryQuestions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/questions/${category_id}/`,
+        `http://localhost:8000/api/questions/${category_id}/`,
         {
           method: 'GET',
           headers: {

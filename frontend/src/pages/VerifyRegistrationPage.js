@@ -13,7 +13,7 @@ const VerifyRegistrationPage = () => {
   }, []);
 
   const verifyToken = async (token) => {
-    const response = await fetch(`http://127.0.0.1:8000/api/verify-token/${token}`);
+    const response = await fetch(`http://localhost:8000/api/verify-token/${token}`);
     const data = await response.json();
     if (data.error) {
       setError(data.error);
@@ -30,7 +30,7 @@ const VerifyRegistrationPage = () => {
     //   return;
     // }
   
-    let response = await fetch(`http://127.0.0.1:8000/api/users/${email}/`, {
+    let response = await fetch(`http://localhost:8000/api/users/${email}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"

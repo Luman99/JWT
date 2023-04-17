@@ -44,7 +44,7 @@ const ExamUsersPage = () => {
     };
 
     let getStudentsGroups = async()=>{
-      let response = await fetch('http://127.0.0.1:8000/api/students_group/', {
+      let response = await fetch('http://localhost:8000/api/students_group/', {
         method:'GET',
         headers:{
   

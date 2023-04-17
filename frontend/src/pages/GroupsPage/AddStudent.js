@@ -25,7 +25,7 @@ export const CreateUserModal = ({ group, onClose, onCreate, onEdit }) => {
   const handleSubmit = async (event) => {
   event.preventDefault();
   console.log(user.id);
-  const response = await fetch('http://127.0.0.1:8000/api/users/', {
+  const response = await fetch('http://localhost:8000/api/users/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
