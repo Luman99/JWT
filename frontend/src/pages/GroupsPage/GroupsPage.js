@@ -22,7 +22,7 @@ const GroupsPage = () => {
   }, [])
 
   let getStudentsGroups = async()=>{
-    let response = await fetch('http://localhost:8000/api/students_group/', {
+    let response = await fetch('http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/students_group/', {
       method:'GET',
       headers:{
 

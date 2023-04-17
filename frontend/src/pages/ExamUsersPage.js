@@ -29,7 +29,7 @@ const ExamUsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/exams/${id}/users/`, {
+        const response = await axios.get(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/${id}/users/`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + String(authTokens.access),
@@ -44,7 +44,7 @@ const ExamUsersPage = () => {
     };
 
     let getStudentsGroups = async()=>{
-      let response = await fetch('http://localhost:8000/api/students_group/', {
+      let response = await fetch('http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/students_group/', {
         method:'GET',
         headers:{
   
@@ -74,7 +74,7 @@ const ExamUsersPage = () => {
     e.preventDefault();
     try {
     
-      await axios.patch(`http://localhost:8000/api/exams/${id}/users/`, 
+      await axios.patch(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/${id}/users/`, 
       {
         users: selectedUsers.map((u) => u.id),
       },

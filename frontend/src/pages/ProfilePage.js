@@ -15,7 +15,7 @@ const ProfilePage = () => {
         localStorage.setItem("name", Name); // zapisz wartość do localStorage
         localStorage.setItem("surname", Surname);
         localStorage.setItem("email", Email);
-        const response = await fetch(`http://localhost:8000/api/edit_user/${user.email}/`, {
+        const response = await fetch(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/edit_user/${user.email}/`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

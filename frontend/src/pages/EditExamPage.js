@@ -21,7 +21,7 @@ const EditExamPage = () => {
   useEffect(() => {
     const fetchExam = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/exams/${id}/`, {
+        const response = await axios.get(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/${id}/`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + String(authTokens.access),
@@ -58,7 +58,7 @@ const EditExamPage = () => {
       }
   
       await axios.patch(
-        `http://localhost:8000/api/update_exam/${id}/`,
+        `http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/update_exam/${id}/`,
         {
           name,
           description,

@@ -21,7 +21,7 @@ const CreateExamPage = () => {
   let [studentsGroups, setStudentsGroups] = useState([])
 
   let getStudentsGroups = async()=>{
-    let response = await fetch('http://localhost:8000/api/students_group/', {
+    let response = await fetch('http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/students_group/', {
       method:'GET',
       headers:{
 
@@ -42,7 +42,7 @@ const CreateExamPage = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/questions/1/',
+        const response = await axios.get('http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/questions/1/',
         {
             headers: {
               'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const CreateExamPage = () => {
 
     // const fetchUsers = async () => {
     //   try {
-    //     const response = await axios.get('http://localhost:8000/api/questions/1/',
+    //     const response = await axios.get('http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/questions/1/',
     //     {
     //         headers: {
     //           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const CreateExamPage = () => {
   const handleCreateExam = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/create_exam/', 
+      const response = await axios.post('http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/create_exam/', 
       {
         name,
         description,
@@ -108,7 +108,7 @@ const CreateExamPage = () => {
       console.log(response)
       console.log(selectedQuestion)
       console.log(selectedQuestions)
-      await axios.patch(`http://localhost:8000/api/exams/${examId}/add_questions/`, 
+      await axios.patch(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/${examId}/add_questions/`, 
       {
         questions: selectedQuestions.map((q) => q.id),
       },
@@ -121,7 +121,7 @@ const CreateExamPage = () => {
     );
     
     
-      await axios.patch(`http://localhost:8000/api/exams/${examId}/users/`, 
+      await axios.patch(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/${examId}/users/`, 
       {
         users: selectedUsers.map((u) => u.id),
       },
