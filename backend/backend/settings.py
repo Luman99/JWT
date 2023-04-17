@@ -126,23 +126,24 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     from .settings_ec2 import *
 # else:
 #     from .settings_local import *
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'rowerowo',
-#         'USER': 'luman',
-#         'PASSWORD': 'szprychy',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
-#     }
-# }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'rowerowo',
+        'USER': 'luman',
+        'PASSWORD': 'szprychy',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
     
 
 AUTH_USER_MODEL = 'userowo.User'
