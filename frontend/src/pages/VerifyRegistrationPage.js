@@ -13,7 +13,7 @@ const VerifyRegistrationPage = () => {
   }, []);
 
   const verifyToken = async (token) => {
-    const response = await fetch(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/verify-token/${token}`);
+    const response = await fetch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/verify-token/${token}`);
     const data = await response.json();
     if (data.error) {
       setError(data.error);
@@ -30,7 +30,7 @@ const VerifyRegistrationPage = () => {
     //   return;
     // }
   
-    let response = await fetch(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/users/${email}/`, {
+    let response = await fetch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/users/${email}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"

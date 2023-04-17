@@ -8,7 +8,7 @@ let {authTokens, user} = useContext(AuthContext)
 const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(user.id);
-    const response = await fetch('http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/create_students_group/', {
+    const response = await fetch('http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/create_students_group/', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',

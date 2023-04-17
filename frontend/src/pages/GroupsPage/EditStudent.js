@@ -29,7 +29,7 @@ export const EditStudent = ({ student, onClose, onEdit, onDelete }) => {
   const handleSubmit = async (event) => {
     console.log(student.email);
     event.preventDefault();
-    const response = await fetch(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/edit_user/${student.email}/`, {
+    const response = await fetch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/edit_user/${student.email}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const EditStudent = ({ student, onClose, onEdit, onDelete }) => {
 
 
   const handleDelete = async () => {
-      const response = await fetch(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/edit_user/${student.email}/`, {
+      const response = await fetch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/edit_user/${student.email}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

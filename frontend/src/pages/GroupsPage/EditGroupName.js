@@ -23,7 +23,7 @@ export const EditModal = ({ group, onClose, onEdit, onDelete, onDelete2 }) => {
   let {authTokens, logoutUser} = useContext(AuthContext)
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await fetch(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/students_group/${group.id}/`, {
+    const response = await fetch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/students_group/${group.id}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export const EditModal = ({ group, onClose, onEdit, onDelete, onDelete2 }) => {
   };
 
   const handleDelete = async () => {
-    const response = await fetch(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/students_group/${group.id}/`, {
+    const response = await fetch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/students_group/${group.id}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
