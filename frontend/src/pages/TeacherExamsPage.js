@@ -12,7 +12,7 @@ const TeacherExams = () => {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const response = await axios.get(`http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/`, {
+        const response = await axios.get(`http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/exams/`, {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + String(authTokens.access),

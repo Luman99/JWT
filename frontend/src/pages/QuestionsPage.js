@@ -49,7 +49,7 @@ const CategoryQuestions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       const response = await fetch(
-        `http://http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/questions/${category_id}/`,
+        `http://ec2-18-159-196-177.eu-central-1.compute.amazonaws.com:8000/api/questions/${category_id}/`,
         {
           method: 'GET',
           headers: {
