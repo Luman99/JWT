@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState, useEffect, useContext} from 'react'
 import { useParams } from 'react-router-dom';
+import AuthContext from '../context/AuthContext'
 
 
 const VerifyRegistrationPage = () => {
   let { token } = useParams();
+  let { logoutUserVerify } = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
+    //logoutUserVerify()
     verifyToken(token);
-    updateUser()
+    console.log(email)
+    
   }, []);
 
   const verifyToken = async (token) => {
@@ -19,10 +23,11 @@ const VerifyRegistrationPage = () => {
       setError(data.error);
     } else {
       setEmail(data.email);
+      updateUser(data.email)
     }
   };
   
-  const updateUser = async () => {
+  const updateUser = async (email) => {
     // e.preventDefault();
     // const { email } = data;
     // if (!email) {
@@ -37,6 +42,7 @@ const VerifyRegistrationPage = () => {
       },
       body: JSON.stringify({ is_active: true })
     });
+    console.log(response)
     // let data = await response.json();
   
     if (response.status === 200) {

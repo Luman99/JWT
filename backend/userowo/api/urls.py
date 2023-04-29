@@ -10,4 +10,5 @@ urlpatterns = [
     path('students_group/', views.get_students_group),
     path('students_group/<int:pk>/', views.update_students_group),
     path('create_students_group/', views.create_students_group),
+    path('change_password/', views.change_password),
 ]

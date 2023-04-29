@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-!7qvt$ev-@p9v$a@#ipfwtmcq#6w@fk+ba(iua-abpbs3j+)$q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # w EC2 *
 
 # Application definition
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
 
     'base',
     'userowo',
+    'examowo',
 
     'rest_framework',
     'rest_framework_simplejwt', #chyba niepotrzebne
@@ -119,6 +121,24 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# os.environ.setdefault('RUNNING_ON_EC2', 'False')
+# if os.environ.get('RUNNING_ON_EC2'):
+#     from .settings_ec2 import *
+# else:
+#     from .settings_local import *
+
+
+## To na EC2
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'rowerowo',
+#         'USER': 'luman',
+#         'PASSWORD': 'szprychy',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 DATABASES = {
     'default': {
@@ -126,6 +146,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+    
 
 AUTH_USER_MODEL = 'userowo.User'
 
@@ -169,6 +190,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True #to można potem zmienić na deployu
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'tekyon.civ.pl'
