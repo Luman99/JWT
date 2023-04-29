@@ -46,14 +46,7 @@ def create_exam(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['PATCH'])
-@permission_classes([IsAuthenticated])
-def add_questions_to_exam(request, exam_id):
-    exam = get_object_or_404(Exam, id=exam_id)
-    question_ids = request.data.get('questions', [])
-    question_objs = [Question.objects.get(id=q) for q in question_ids]
-    exam.questions.add(*question_objs)
-    return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
@@ -87,6 +80,29 @@ def update_exam(request, id):
 #     Question.objects.bulk_update(question_objs, ['exam'])
 #     return Response(status=status.HTTP_204_NO_CONTENT)
 
+# @api_view(['PATCH'])
+# @permission_classes([IsAuthenticated])
+# def add_questions_to_exam(request, exam_id):
+#     exam = get_object_or_404(Exam, id=exam_id)
+#     question_ids = request.data.get('questions', [])
+#     question_objs = [Question.objects.get(id=q) for q in question_ids]
+#     exam.questions.add(*question_objs)
+#     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def manage_exam_questions(request, exam_id):
+    exam = get_object_or_404(Exam, id=exam_id)
+
+    if request.method == 'GET':
+        questions = exam.questions.all()
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'PATCH':
+        question_ids = request.data.get('questions', [])
+        exam.questions.set(question_ids)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'PATCH'])

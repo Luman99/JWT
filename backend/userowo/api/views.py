@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 from ..models import VerificationToken, StudentsGroup
 from .serializers import UserSerializer, UpdateUserSerializer, StudentsGroupSerializer, CreateStudentsGroupSerializer
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
 
 User = get_user_model()
 
@@ -134,3 +135,23 @@ def create_students_group(request):
     return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    user = request.user
+    current_password = request.data.get('current_password')
+    new_password = request.data.get('new_password')
+
+    # Sprawdzenie poprawności obecnego hasła
+    if not check_password(current_password, user.password):
+        return Response({'message': 'Invalid current password'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Sprawdzenie, czy nowe hasło jest różne od obecnego
+    if current_password == new_password:
+        return Response({'message': 'New password must be different from current password'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Zmiana hasła
+    user.set_password(new_password)
+    user.save()
+
+    return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)

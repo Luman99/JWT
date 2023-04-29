@@ -13,15 +13,15 @@ const CreateExamPage = () => {
   const [blockSite, setBlockSite] = useState(true);
   const [mixQuestions, setMixQuestions] = useState(true);
   const [questions, setQuestions] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
   let [studentsGroups, setStudentsGroups] = useState([])
 
   let getStudentsGroups = async()=>{
-    let response = await fetch('http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/students_group/', {
+    let response = await fetch('http://127.0.0.1:8000/api/students_group/', {
       method:'GET',
       headers:{
 
@@ -42,7 +42,7 @@ const CreateExamPage = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get('http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/questions/1/',
+        const response = await axios.get('http://127.0.0.1:8000/api/questions/1/',
         {
             headers: {
               'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const CreateExamPage = () => {
 
     // const fetchUsers = async () => {
     //   try {
-    //     const response = await axios.get('http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/questions/1/',
+    //     const response = await axios.get('http://127.0.0.1:8000/api/questions/1/',
     //     {
     //         headers: {
     //           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const CreateExamPage = () => {
   const handleCreateExam = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/create_exam/', 
+      const response = await axios.post('http://127.0.0.1:8000/api/create_exam/', 
       {
         name,
         description,
@@ -108,7 +108,7 @@ const CreateExamPage = () => {
       console.log(response)
       console.log(selectedQuestion)
       console.log(selectedQuestions)
-      await axios.patch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/exams/${examId}/add_questions/`, 
+      await axios.patch(`http://127.0.0.1:8000/api/exams/${examId}/questions/`, 
       {
         questions: selectedQuestions.map((q) => q.id),
       },
@@ -121,7 +121,7 @@ const CreateExamPage = () => {
     );
     
     
-      await axios.patch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/exams/${examId}/users/`, 
+      await axios.patch(`http://127.0.0.1:8000/api/exams/${examId}/users/`, 
       {
         users: selectedUsers.map((u) => u.id),
       },
@@ -148,6 +148,13 @@ const CreateExamPage = () => {
       ...prevSelectedQuestions,
       selectedQuestion,
     ]);
+    setSelectedQuestion(null)
+  };
+
+  const handleDeleteQuestion = (questionId) => {
+    setSelectedQuestions((prevSelectedQuestions) => prevSelectedQuestions.filter((q) => q.id !== questionId));
+    const deletedQuestion = selectedQuestions.find((q) => q.id === questionId);
+    setQuestions((prevQuestions) => [...prevQuestions, deletedQuestion]);
   };
 
   const handleAddUser = async (e) => {
@@ -172,6 +179,11 @@ const CreateExamPage = () => {
       return group;
     })
   );
+    setSelectedUser(null);
+  };
+
+  const handleDeleteUser = (userId) => {
+    setSelectedUsers((prevSelectedUsers) => prevSelectedUsers.filter((u) => u.id !== userId));
   };
 
   return (
@@ -213,7 +225,7 @@ const CreateExamPage = () => {
     <label htmlFor="questionSelect">Select Question:</label>
     <select
       id="questionSelect"
-      value={selectedQuestion.id}
+      value={selectedQuestion? selectedQuestion.id : ''}
       onChange={(e) => {
         const questionId = parseInt(e.target.value);
         const question = questions.find((q) => q.id === questionId);
@@ -228,14 +240,21 @@ const CreateExamPage = () => {
         </option>
       ))}
     </select>
-    <button onClick={handleAddQuestion}>Add</button>
+    <button onClick={handleAddQuestion} disabled={!selectedQuestion}>
+      Add
+      </button>
   </div>
 
   <div>
     <label>Selected Questions:</label>
     <ul>
       {selectedQuestions.map((q) => (
-        <li key={q.id}>{q.text}</li>
+        <li key={q.id}>{q.text}
+          <button onClick={() => handleDeleteQuestion(q.id)} type="button">
+            Usuń
+          </button>
+        </li>
+        
       ))}
     </ul>
   </div>
@@ -243,7 +262,7 @@ const CreateExamPage = () => {
   <label htmlFor="userSelect">Select User:</label>
   <select 
     id="userSelect" 
-    value={selectedUser.id}
+    value={selectedUser ? selectedUser.id : ''}
     onChange={(e) => {
       const userId = parseInt(e.target.value);
       const user = studentsGroups.find((group) =>
@@ -265,14 +284,19 @@ const CreateExamPage = () => {
       </optgroup>
     ))}
   </select>
-  <button onClick={handleAddUser}>Add User</button>
+  <button onClick={handleAddUser} disabled={!selectedUser}>
+  Add User
+</button>
+
 </div>
 
 <div>
     <label>Selected Users:</label>
     <ul>
       {selectedUsers.map((u) => (
-        <li key={u.id}>{u.email}</li>
+        <li key={u.id}>{u.email}
+          <button onClick={() => handleDeleteUser(u.id)}>Usuń</button>
+        </li>
       ))}
     </ul>
   </div>

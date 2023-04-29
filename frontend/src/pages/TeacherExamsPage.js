@@ -12,7 +12,7 @@ const TeacherExams = () => {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const response = await axios.get(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/exams/`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/exams/`, {
           headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + String(authTokens.access),
@@ -48,6 +48,8 @@ const TeacherExams = () => {
                 <Link to={`/edit-exam/${exam.id}`}>{exam.name}</Link>
                 <span>    </span>
                 <Link to={`/exam_users/${exam.id}`}>Edytuj uczniów</Link>
+                <span>    </span>
+                <Link to={`/exam_questions/${exam.id}`}>Edytuj pytania</Link>
                 </React.Fragment>
               </li>
             ))}

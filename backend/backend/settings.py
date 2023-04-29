@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!7qvt$ev-@p9v$a@#ipfwtmcq#6w@fk+ba(iua-abpbs3j+)$q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'] # potem to zmień !!!!!!!!!!!!!!!!!
+ALLOWED_HOSTS = [] # w EC2 *
 
 # Application definition
 
@@ -127,23 +127,25 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # else:
 #     from .settings_local import *
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rowerowo',
-        'USER': 'luman',
-        'PASSWORD': 'szprychy',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
 
+## To na EC2
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'rowerowo',
+#         'USER': 'luman',
+#         'PASSWORD': 'szprychy',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
     
 
 AUTH_USER_MODEL = 'userowo.User'

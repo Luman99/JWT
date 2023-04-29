@@ -17,6 +17,7 @@ import CreateExamPage from './pages/CreateExamPage'
 import TeacherExamsPage from './pages/TeacherExamsPage'
 import EditExamPage from './pages/EditExamPage'
 import ExamUsersPage from './pages/ExamUsersPage'
+import ExamQuestionsPage from './pages/ExamQuestionsPage'
 import Header from './components/Header'
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="teacherexams" element={<TeacherExamsPage />} />
           <Route path="edit-exam/:id" element={<EditExamPage />} />
           <Route path="exam_users/:id" element={<ExamUsersPage />} />
+          <Route path="exam_questions/:id" element={<ExamQuestionsPage />} />
           
         </Routes>
       </AuthProvider>

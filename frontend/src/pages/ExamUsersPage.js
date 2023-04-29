@@ -5,85 +5,70 @@ import { useParams } from 'react-router-dom';
 
 const ExamUsersPage = () => {
   const { id } = useParams();
-  let {authTokens, user} = useContext(AuthContext)
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
-  const [timeToSolve, setTimeToSolve] = useState(30);
-  const [showResults, setShowResults] = useState(true);
-  const [blockSite, setBlockSite] = useState(true);
-  const [mixQuestions, setMixQuestions] = useState(true);
-  const [questions, setQuestions] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState('');
-  const [selectedQuestions, setSelectedQuestions] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
+  let { authTokens, user } = useContext(AuthContext);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState([]);
-  let [studentsGroups, setStudentsGroups] = useState([])
+  let [studentsGroups, setStudentsGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
-
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/exams/${id}/users/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + String(authTokens.access),
-          },
+      const response = await axios.get(`http://127.0.0.1:8000/api/exams/${id}/users/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + String(authTokens.access),
+        },
+      });
+      return response.data;
+    };
+  
+    const getStudentsGroups = async () => {
+      const response = await fetch('http://127.0.0.1:8000/api/students_group/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + String(authTokens.access),
+        },
+      });
+      const data = await response.json();
+      return data;
+    };
+  
+    Promise.all([fetchUsers(), getStudentsGroups()])
+      .then(([users, groups]) => {
+        setStudentsGroups(groups);
+        const usersWithGroupNames = users.map((user) => {
+          const group = groups.find((group) =>
+            group.students.find((student) => student.id === user.id)
+          );
+          return group ? { ...user, groupName: group.name } : user;
         });
-        setSelectedUsers(response.data);
+        setSelectedUsers(usersWithGroupNames);
         setLoading(false);
-      } catch (error) {
+      })
+      .catch((error) => {
         setError(error);
         setLoading(false);
-      }
-    };
-
-    let getStudentsGroups = async()=>{
-      let response = await fetch('http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/students_group/', {
-        method:'GET',
-        headers:{
-  
-          'Content-Type':'application/json',
-          'Authorization':'Bearer ' + String(authTokens.access)
-        }
-      })
-      let data = await response.json()
-  
-      if(response.status === 200){
-          setStudentsGroups(data)
-      }else if(response.statusText === 'Unauthorized'){
-          
-      }
-  
-    }
-
-
-    fetchUsers();
-    getStudentsGroups();
-
+      });
   }, []);
-
+  
 
 
   const handleCreateExam = async (e) => {
     e.preventDefault();
     try {
-    
-      await axios.patch(`http://ec2-3-127-214-188.eu-central-1.compute.amazonaws.com:8000/api/exams/${id}/users/`, 
-      {
-        users: selectedUsers.map((u) => u.id),
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authTokens.access),
+      await axios.patch(
+        `http://127.0.0.1:8000/api/exams/${id}/users/`,
+        {
+          users: selectedUsers.map((u) => u.id),
         },
-      }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + String(authTokens.access),
+          },
+        },
       );
       alert('Exam created successfully');
     } catch (error) {
@@ -92,106 +77,75 @@ const ExamUsersPage = () => {
     }
   };
 
-
-  const handleAddUser = async (e) => {
+  const handleAddUser = (e) => {
     e.preventDefault();
-    setUsers((prevUsers) =>
-      prevUsers.filter((u) => u.id !== selectedUser.id)
-    );
-    setSelectedUsers((prevSelectedUsers) => [
-      ...prevSelectedUsers,
-      selectedUser,
-    ]);
-    setStudentsGroups((prevGroups) =>
-    prevGroups.map((group) => {
-      if (group.students) {
-        return {
-          ...group,
-          students: group.students.filter(
-            (student) => student.id !== selectedUser.id
-          ),
-        };
-      }
-      return group;
-    })
-  );
+    setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, selectedUser]);
+    setSelectedUser(null);
   };
 
-  const handleDeleteUser = async (e) => {
-    e.preventDefault();
-    setUsers((prevUsers) =>
-      prevUsers.filter((u) => u.id !== selectedUser.id)
-    );
-    setSelectedUsers((prevSelectedUsers) => [
-      ...prevSelectedUsers,
-      selectedUser,
-    ]);
-    setStudentsGroups((prevGroups) =>
-    prevGroups.map((group) => {
-      if (group.students) {
-        return {
-          ...group,
-          students: group.students.filter(
-            (student) => student.id !== selectedUser.id
-          ),
-        };
-      }
-      return group;
-    })
-  );
+  const handleDeleteUser = (userId) => {
+    setSelectedUsers((prevSelectedUsers) => prevSelectedUsers.filter((u) => u.id !== userId));
   };
 
   return (
     <div>
       <form onSubmit={handleCreateExam}>
-  <div>
-  <label htmlFor="userSelect">Select User:</label>
-  <select 
-    id="userSelect" 
-    value={selectedUser.id}
-    onChange={(e) => {
-      const userId = parseInt(e.target.value);
-      const user = studentsGroups.find((group) =>
-        group.students.find((student) => student.id === userId)
-        ).students.find((student) => student.id === userId);
-      console.log(user)
-      setSelectedUser(user);
-    }}
-  >
-    <option value="">--Select a User--</option>
-    {studentsGroups.map((group) => (
-      <optgroup key={group.id} label={group.name}>
-        {group.students &&
-           group.students
-           .filter((student) => !selectedUsers.some((u) => u.id === student.id))
-           .map((student) => (
-             <option key={student.id} value={student.id}>
-               {student.email}
-              
-             </option>
-          ))}
-           
-      </optgroup>
-    ))}
-  </select>
-  <button onClick={handleAddUser}>Add User</button>
-</div>
+        <div>
+          <label htmlFor="userSelect">Select User:</label>
+          <select
+            id="userSelect"
+            value={selectedUser ? selectedUser.id : ''}
 
-<div>
-    <label>Selected Users:</label>
-    <ul>
-      {selectedUsers.map((u) => (
-        <li key={u.id}>{u.email}
-        <button onClick={() => handleDeleteUser(user.id)}>Usuń</button>
-        </li>
-      ))}
-    </ul>
-  </div>
+            onChange={(e) => {
+              const userId = parseInt(e.target.value);
+              if (isNaN(userId)) {
+                setSelectedUser(null);
+              } else {
+                const group = studentsGroups.find((group) =>
+                  group.students.find((student) => student.id === userId),
+                );
+                const user = group.students.find((student) => student.id === userId);
+                setSelectedUser({ ...user, groupName: group.name });
+              }
+            }}
+            
+          >
+            <option value="">--Select a User--</option>
+            {studentsGroups.map((group) => (
+              <optgroup key={group.id} label={group.name}>
+                {group.students
+                  .filter((student) => !selectedUsers.some((u) => u.id === student.id))
+                  .map((student) => (
+                    <option key={student.id} value={student.id}>
+                      {student.email} ({group.name})
+                    </option>
+                  ))}
+              </optgroup>
+            ))}
+          </select>
+          <button onClick={handleAddUser} disabled={!selectedUser}>
+            Add User
+          </button>
 
-<button type="submit">Zapisz</button>
-</form>
-</div>
-);
+        </div>
+
+        <div>
+          <label>Selected Users:</label>
+          <ul>
+            {selectedUsers.map((u) => (
+              <li key={u.id}>
+                {u.email} ({u.groupName})
+                <button onClick={() => handleDeleteUser(u.id)}>Usuń</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <button type="submit">Zapisz</button>
+      </form>
+    </div>
+  );
 };
 
 export default ExamUsersPage;
+
