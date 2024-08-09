@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../context/AuthContext'
 import axios from 'axios';
 
+//// Trzeba dokonać trochę zmian, usprawnić dodawanie userów i questions, żeby było to zrobione tak dobrze jak w poszczególnych stronach do edycji tych elementów
+
 const CreateExamPage = () => {
     let {authTokens, user} = useContext(AuthContext)
   const [name, setName] = useState('');

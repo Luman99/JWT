@@ -17,12 +17,32 @@ from django.contrib.auth.hashers import check_password
 User = get_user_model()
 
 
+
 def send_verification_email(email, token):
-    subject = 'Aktywuj swoje konto'
-    message = f'Aktywuj swoje konto klikając w link: http://localhost:3000/verify_registration/{token}/'
+    subject = 'Witamy w serwisie Rowerowo'
+    # Treść wiadomości w HTML
+    message_html = f"""
+    <div style="border: 2px solid #e0e0e0; padding: 10px; margin: 10px; border-radius: 5px;">
+        <p>Witamy,</p>
+        
+        <p>Konto Rowerowo zostało utworzone pomyślnie.<br>
+
+        <a href="http://localhost:3000/verify_registration/{token}/">Aktywuj swoje konto klikając w ten link</a> <br>
+
+        Od momentu aktywacji będziesz mógł się zalogować, podając adres e-mail {email} oraz swoje hasło.</p>
+
+        <p>Szerokiej drogi w nauce.</p>
+        <p>Z poważaniem,<br>
+        Zespół Rowerowo</p>
+    </div>
+    """
+    
     from_email = 'lukasz.grabowski@zdalna-lekcja.pl'
     recipient_list = [email]
-    send_mail(subject, message, from_email, recipient_list)
+ # Użyj metody send_mail z odpowiednimi parametrami dla wiadomości HTML
+    send_mail(subject, '', from_email, recipient_list, html_message=message_html)
+
+
 
 
 @api_view(['POST'])
@@ -155,3 +175,4 @@ def change_password(request):
     user.save()
 
     return Response({'message': 'Password changed successfully'}, status=status.HTTP_200_OK)
+

@@ -11,4 +11,6 @@ urlpatterns = [
     path('students_group/<int:pk>/', views.update_students_group),
     path('create_students_group/', views.create_students_group),
     path('change_password/', views.change_password),
+    # path('password-reset/', views.password_reset_request, name='password-reset'),
+
 ]

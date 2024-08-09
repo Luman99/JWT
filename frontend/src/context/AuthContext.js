@@ -12,6 +12,9 @@ export const AuthProvider = ({children}) => {
     let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
     let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
     let [loading, setLoading] = useState(false)
+    const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
 
     const history = useNavigate()
 
@@ -22,21 +25,21 @@ export const AuthProvider = ({children}) => {
             headers:{
                 'Content-Type':'application/json'
             },
-            body:JSON.stringify({'email':e.target.email.value, 'username':e.target.username.value, 'surname': '', 'password':e.target.password.value, 'is_active':false, 'is_teacher': true})
+            body:JSON.stringify({'email':e.target.email.value, 'username': '', 'surname': '', 'password':e.target.password.value, 'is_active':false, 'is_teacher': true})
         })
         let data = await response.json()
 
         if(response.status === 201){
-            history('/login')
+            setRegistrationSuccess(true); // Aktualizacja stanu
         }else{
-            alert('Something went wrong!')
+            setErrorMessage("Błąd podczas rejestracji. Spróbuj ponownie.");
         }
     }
 
     let loginUser = async (e )=> {
-        if(!loading){
-            setLoading(true)
-        }
+        // if(!loading){
+        //     setLoading(true)
+        // }
         e.preventDefault()
         let response = await fetch('http://127.0.0.1:8000/api/token/', {
             method:'POST',
@@ -53,7 +56,7 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem('authTokens', JSON.stringify(data))
             history('/')
         }else{
-            alert('Something went wrong!')
+            setErrorMessage("Błąd podczas logowania. Sprawdź swoje dane i spróbuj ponownie.");
         }
     }
     
@@ -102,6 +105,10 @@ export const AuthProvider = ({children}) => {
         registrationUser:registrationUser,
         loginUser:loginUser,
         logoutUser:logoutUser,
+        registrationSuccess: registrationSuccess, // nowa wartość
+        setRegistrationSuccess: setRegistrationSuccess,
+        errorMessage: errorMessage,
+        setErrorMessage: setErrorMessage
     }
 
     useEffect(()=> {
@@ -118,7 +125,7 @@ export const AuthProvider = ({children}) => {
         }, fourMinutes)
         return ()=> clearInterval(interval)      
     }, [authTokens, loading])
-
+    
     return(
         <AuthContext.Provider value={contextData} >
             {loading ? null : children}

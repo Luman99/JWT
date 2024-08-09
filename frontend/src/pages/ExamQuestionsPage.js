@@ -61,6 +61,7 @@ const ExamQuestionsPage = () => {
       setQuestions(allQuestions.filter(q => !selectedQuestions.some(eq => eq.id === q.id)));
     };
   
+    console.log(selectedCategory)
     if (selectedCategory) {
       fetchQuestionsForCategory();
     }

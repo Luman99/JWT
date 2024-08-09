@@ -16,8 +16,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         if not password:
             raise ValueError('Users must have a password')
-        if not username:
-            raise ValueError('Users must have a username')
+
 
         user = self.model(
             email=self.normalize_email(email),
@@ -72,7 +71,7 @@ class User(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    username = models.CharField(max_length=50, unique=False)
+    username = models.CharField(max_length=50, unique=False, null=True, blank=True, default='')
     surname = models.CharField(max_length=50, unique=False, null=True, blank=True, default='')
     teacher = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     students_group = models.ForeignKey('StudentsGroup', on_delete=models.CASCADE, null=True, blank=True)
@@ -84,7 +83,7 @@ class User(AbstractBaseUser):
     # notice the absence of a "Password field", that is built in.
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']  # Email & Password are required by default.
+    # REQUIRED_FIELDS = ['username']  # Email & Password are required by default.
 
     objects = UserManager()
 
